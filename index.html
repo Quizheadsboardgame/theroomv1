@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE ROOM (FILM)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif; /* Standard font */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: transparent; /* Fully transparent background */
+            color: black; /* Standard text color */
+            text-align: center;
+        }
+
+        #quiz-container {
+            background-color: transparent; /* Fully transparent container */
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #logo {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: white; /* Change the answer color to white */
+        }
+
+        #next-button {
+            background-color: white; /* Change background color to white */
+            color: black; /* Change text color to black for visibility */
+            border: 2px solid #ff9900; /* Optional: Add a border for better visibility */
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #next-button:hover {
+            background-color: #ffcc00; /* Change hover color for better effect */
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeOut {
+            animation: fadeOut 0.5s forwards;
+        }
+
+        .fadeIn {
+            animation: fadeIn 0.5s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <img id="logo" src="https://i.imgur.com/cyZ0Z21.png" alt="George Michael Logo">
+    <h1>THE ROOM (FILM)</h1>
+    <div id="question-container">
+        <div class="question" id="question">Loading question...</div>
+        <div class="answer" id="answer">Loading answer...</div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Question and answers data
+    const quizData = [
+        { question: "Who directed and starred in The Room?", answer: "Tommy Wiseau." },
+        { question: "What year was The Room released?", answer: "2003." },
+        { question: "What is the main character's name in The Room?", answer: "Johnny." },
+        { question: "What is the profession of Johnny, the main character?", answer: "He is a successful banker." },
+        { question: "Who is Johnny's girlfriend in the film?", answer: "Lisa." },
+        { question: "What does Lisa tell Johnny she no longer loves him?", answer: "She says she has 'changed her mind.'" },
+        { question: "What is the name of Johnny's best friend?", answer: "Mark." },
+        { question: "What famous quote does Johnny repeatedly say in the film?", answer: "\"You're tearing me apart, Lisa!\"" },
+        { question: "What does Lisa do that causes conflict in her relationship with Johnny?", answer: "She cheats on him with Mark." },
+        { question: "What is the name of the woman who is Lisa's mother?", answer: "Claudette." },
+        { question: "What does Johnny say he will buy for Lisa's birthday?", answer: "A red dress." },
+        { question: "How does Johnny react when he learns about Lisa's affair?", answer: "He is devastated and confused." },
+        { question: "What sport do Johnny and Mark play together?", answer: "Football (American football)." },
+        { question: "What unusual item does Johnny frequently throw around in the film?", answer: "A football." },
+        { question: "What is the tone of The Room that has contributed to its cult following?", answer: "Unintentional comedy and melodrama." },
+        { question: "How does Johnny die at the end of the film?", answer: "He is shot by a mysterious figure." },
+        { question: "What recurring theme is highlighted by Lisa's character throughout the film?", answer: "Betrayal and manipulation." },
+        { question: "What does Lisa's mother say about her health in the film?", answer: "She says she has breast cancer, but it’s later revealed to be untrue." },
+        { question: "What is the name of the group of friends that includes Johnny and Mark?", answer: "They are not given a specific group name in the film." },
+        { question: "What film festival is The Room famously screened at?", answer: "Midnight screenings; it has become a cult phenomenon." },
+        { question: "Which actor portrayed Mark, Johnny's best friend?", answer: "Greg Sestero." },
+        { question: "What is a famous line from the film that has become a meme?", answer: "\"Oh hi, Mark.\"" },
+        { question: "What unusual filming technique does Tommy Wiseau use throughout the movie?", answer: "Non-linear storytelling and random transitions." },
+        { question: "Which actress played Lisa?", answer: "Juliette Danielle." },
+        { question: "What is the overall reception of The Room by critics?", answer: "It is widely regarded as one of the worst films ever made, yet beloved for its unintentional humor." },
+        { question: "What is the name of the dog that appears in the film?", answer: "The dog is not named but is often referred to as a Rottweiler." },
+        { question: "Which character throws a party in the film?", answer: "Lisa throws a party that Johnny is unaware of." },
+        { question: "What is the significance of the rooftop scene?", answer: "It symbolizes the emotional climax between Johnny, Lisa, and Mark." },
+        { question: "What does Johnny often say when he enters a room?", answer: "\"Oh hi!\"" },
+        { question: "What does Mark confess to Johnny regarding Lisa?", answer: "Mark admits to Johnny that he has feelings for Lisa." },
+        { question: "What does Lisa say to her mother about Johnny?", answer: "She tells her mother that she doesn't love Johnny anymore." },
+        { question: "How do Johnny's friends initially react to his relationship with Lisa?", answer: "They are supportive and excited." },
+        { question: "What does Johnny bring to the party that surprises everyone?", answer: "Johnny brings a surprise gift, which is often vague in the film." },
+        { question: "How does Lisa describe Johnny to Mark?", answer: "She describes him as 'too good.'" },
+        { question: "What is the name of the room in which much of the film takes place?", answer: "The titular 'Room,' which refers to Johnny and Lisa's apartment." },
+        { question: "What does Johnny try to do to fix his relationship with Lisa?", answer: "He tries to propose to her again and expresses his love." },
+        { question: "What notable phrase is said by the character Denny?", answer: "\"I just like to watch you guys.\"" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    // Shuffle the questions
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Start the quiz
+    shuffle(quizData);
+    showQuestion();
+
+    function showQuestion() {
+        const questionContainer = document.getElementById("question");
+        const answerContainer = document.getElementById("answer");
+
+        questionContainer.innerText = quizData[currentQuestionIndex].question;
+        answerContainer.innerText = "Loading answer...";
+
+        // Fade in effect
+        answerContainer.classList.remove("fadeIn");
+        answerContainer.classList.add("fadeOut");
+
+        setTimeout(() => {
+            answerContainer.innerText = quizData[currentQuestionIndex].answer;
+            answerContainer.classList.remove("fadeOut");
+            answerContainer.classList.add("fadeIn");
+        }, 500);
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < quizData.length) {
+            showQuestion();
+        } else {
+            const questionContainer = document.getElementById("question");
+            const answerContainer = document.getElementById("answer");
+            questionContainer.innerText = "Thank you for playing!";
+            answerContainer.innerText = "";
+            document.getElementById("next-button").style.display = "none"; // Hide the next button
+        }
+    }
+</script>
+
+</body>
+</html>
